@@ -453,4 +453,133 @@ KVM & vhost-net & virtio + qcow \\ \hline
 \end{figure}	
 \end{frame}
 
+
+
+\begin{frame}[fragile]
+\frametitle{Listando containers y imágenes}
+\begin{lstlisting}
+[root@ip122 ~]# docker ps
+\end{lstlisting}
+
+\begin{lstlisting}
+[root@ip122 ~]# docker images
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Ejercicio}
+¿Qué vamos hacer?
+\begin{itemize}
+	\item Construir una imagen de nginx.
+	\item Correr un container que corra nginx
+	\item Exponer el puerto para que sea accesible desde intenet.
+	\item Usar volúmenes.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Construir}
+\begin{lstlisting}
+docker build -t nombre_imagen:tag .
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Construir}
+\begin{lstlisting}
+docker run --name docker-nginx -p 8080:80 nginx
+\end{lstlisting}
+\begin{itemize}
+	\item run es el comando para crear un nuevo container
+	\item \textbf{--name} es un flag para especificar el nombre.
+	\item \textbf{-p} especifica el puerto mapping \textbf{-p local-machine-port:internal-container-port}.
+	\item \textbf{nginx} el nombre de la imagen.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Correr}
+\begin{lstlisting}
+docker run --name docker-nginx  nginx ping google.cl
+\end{lstlisting}
+\begin{itemize}
+	\item run es el comando para crear un nuevo container
+	\item \textbf{--name} es un flag para especificar el nombre.
+	\item \textbf{-p} especifica el puerto mapping \textbf{-p local-machine-port:internal-container-port}.
+	\item \textbf{nginx} el nombre de la imagen.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Detach}
+\begin{lstlisting}
+docker run --name docker-nginx -p :80 -d nginx
+\end{lstlisting}
+\begin{itemize}
+	\item run es el comando para crear un nuevo container
+	\item \textbf{--name} es un flag para especificar el nombre.
+	\item \textbf{-p} especifica el puerto mapping \textbf{-p local-machine-port:internal-container-port}.
+	\item \textbf{nginx} el nombre de la imagen.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Control}
+\begin{lstlisting}
+sudo docker stop docker-nginx
+\end{lstlisting}
+
+
+\begin{lstlisting}
+sudo start stop docker-nginx
+\end{lstlisting}
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Volumenes}
+\begin{lstlisting}
+mkdir -p ~/docker-nginx/html
+cd ~/docker-nginx/html
+\end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Volumenes}
+\begin{lstlisting}
+sudo docker run --name docker-nginx -p 80:80 -d -v ~/docker-nginx/html:/usr/share/nginx/html nginx
+\end{lstlisting}
+
+\textbf{-v} especifica un enlace entre un directorio entre el host y el container
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Volumenes}
+\begin{lstlisting}
+sudo docker stop docker-nginx
+sudo docker rm docker-nginx
+
+\end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Volumenes}
+\begin{lstlisting}
+sudo docker run --name docker-nginx -p 80:80 -v ~/docker-nginx/html:/usr/share/nginx/html -v ~/docker-nginx/default.conf:/etc/nginx/conf.d/default.conf -d nginx
+sudo docker restart docker-nginx
+\end{lstlisting}
+
+\end{frame}
+
 \end{document}
